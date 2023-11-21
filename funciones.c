@@ -75,7 +75,7 @@ void modificarSaldo(FILE *archivo, int pin, float nuevoSaldo) {
         }
     }
 
-    if (encontrado) {
+    if (encontrado == 1) {
         printf("Saldo actualizado para el usuario con PIN %d.\n", pin);
     } else {
         printf("Usuario con PIN %d no encontrado.\n", pin);
