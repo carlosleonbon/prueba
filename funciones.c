@@ -1,8 +1,9 @@
 #include "funciones.h"
+#include "estructuras.h"
 
 void asignarPalabra(struct Palabra *p, const char *nuevaPalabra, int repeticiones) {
     p->cadena = (char *)malloc((strlen(nuevaPalabra) + 1) * sizeof(char));
-    if (p->cadena != NULL) {
+    if (p->cadena != '\0') {
         strcpy(p->cadena, nuevaPalabra);
         p->repeticiones = repeticiones;
     } else {

@@ -1,3 +1,7 @@
+#pragma once
+
+
+
 void asignarPalabra(struct Palabra *p, const char *nuevaPalabra, int repeticiones);
 
 void liberarPalabras(struct Palabra *palabras, int numPalabras);

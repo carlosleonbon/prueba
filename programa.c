@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "funciones.h"
+#include "estructuras.h"
 
 #define MAX_LONGITUD_PALABRA 50
 
