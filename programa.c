@@ -1,47 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "funciones.h"
 #include "estructuras.h"
-
-#define MAX_LONGITUD_PALABRA 50
+#define MAX_LONGITUD_PALABRA 100
 
 int main() {
-    FILE *archivo = fopen("texto.txt", "r");;
-    char buffer[MAX_LONGITUD_PALABRA];
-    struct Palabra *palabras = NULL;
-    int numPalabras = 0;
+    char nombreArchivo[] = "texto.txt";
+    FILE *archivo;
+    char palabra[MAX_LONGITUD_PALABRA];
 
+    archivo = fopen(nombreArchivo, "r");
     if (archivo == NULL) {
-        printf("Error al abrir el archivo");
-        return EXIT_FAILURE;
+        printf("No se pudo abrir el archivo %s\n", nombreArchivo);
+        return 1;
     }
 
-    while (fscanf(archivo, "%s", buffer) == 1) {
-        int indice = buscarPalabra(palabras, numPalabras, buffer);
+    ConteoPalabra conteo[1000]; // Arreglo para almacenar conteo de palabras
+    int numPalabras = 0;
+
+    while (fscanf(archivo, "%s", palabra) == 1) {
+        normalizarPalabra(palabra);
+
+        int indice = buscarPalabra(conteo, palabra, numPalabras);
         if (indice != -1) {
-            palabras[indice].repeticiones++; // Incrementa el contador de repeticiones
+            conteo[indice].frecuencia++;
         } else {
-            struct Palabra *temp = realloc(palabras, (numPalabras + 1) * sizeof(struct Palabra));
-            if (temp == NULL) {
-                printf("Error: No se pudo asignar memoria para la palabra.\n");
-                break;
-            } else {
-                palabras = temp;
-            }
-            asignarPalabra(&palabras[numPalabras], buffer, 1);
+            strcpy(conteo[numPalabras].palabra, palabra);
+            conteo[numPalabras].frecuencia = 1;
             numPalabras++;
         }
     }
 
     fclose(archivo);
 
-    printf("Palabras y repeticiones:\n");
+    // Generar reporte
+    printf("Reporte de frecuencia de palabras:\n");
+    printf("------------------------------\n");
     for (int i = 0; i < numPalabras; i++) {
-        printf("%s : %d\n", palabras[i].cadena, palabras[i].repeticiones);
+        printf("%s : %d\n", conteo[i].palabra, conteo[i].frecuencia);
     }
-
-    liberarPalabras(palabras, numPalabras);
 
     return 0;
 }
+

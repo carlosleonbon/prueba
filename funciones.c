@@ -1,28 +1,27 @@
 #include "funciones.h"
-#include "estructuras.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include "estructuras.h" 
 
-void asignarPalabra(struct Palabra *p, const char *nuevaPalabra, int repeticiones) {
-    p->cadena = (char *)malloc((strlen(nuevaPalabra) + 1) * sizeof(char));
-    if (p->cadena != '\0') {
-        strcpy(p->cadena, nuevaPalabra);
-        p->repeticiones = repeticiones;
-    } else {
-        printf("Error: No se pudo asignar memoria para la palabra.\n");
+// Función para normalizar una palabra (convertirla a minúsculas)
+void normalizarPalabra(char *palabra) {
+    int i = 0;
+    while (palabra[i]) {
+        palabra[i] = tolower(palabra[i]);
+        i++;
     }
 }
 
-void liberarPalabras(struct Palabra *palabras, int numPalabras) {
+// Función para buscar una palabra en el arreglo de conteo de palabras
+int buscarPalabra(ConteoPalabra conteo[], char *palabra, int numPalabras) {
     for (int i = 0; i < numPalabras; i++) {
-        free(palabras[i].cadena);
-    }
-    free(palabras);
-}
-
-int buscarPalabra(struct Palabra *palabras, int numPalabras, const char *palabra) {
-    for (int i = 0; i < numPalabras; i++) {
-        if (strcmp(palabras[i].cadena, palabra) == 0) {
-            return i; // La palabra ya existe en la estructura, devuelve su índice
+        if (strcmp(conteo[i].palabra, palabra) == 0) {
+            return i;
         }
     }
-    return -1; // La palabra no existe en la estructura
+    return -1;
 }
+
+ 
