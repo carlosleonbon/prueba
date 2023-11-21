@@ -24,4 +24,60 @@ int buscarPalabra(ConteoPalabra conteo[], char *palabra, int numPalabras) {
     return -1;
 }
 
- 
+// problema 2
+
+void agregarUsuario(FILE *archivo) {
+    Usuario nuevoUsuario;
+
+    printf("Ingrese el nombre del usuario: ");
+    scanf("%s", nuevoUsuario.nombre);
+
+    printf("Ingrese el PIN del usuario: ");
+    scanf("%d", &nuevoUsuario.pin);
+
+    printf("Ingrese el saldo del usuario: ");
+    scanf("%f", &nuevoUsuario.saldo);
+
+    fseek(archivo, 0, SEEK_END); // Coloca el puntero al final del archivo
+    fwrite(&nuevoUsuario, sizeof(Usuario), 1, archivo);
+    printf("Usuario agregado con éxito.\n");
+}
+
+// Función para mostrar la información de todos los usuarios
+void mostrarUsuarios(FILE *archivo) {
+    Usuario usuario;
+
+    fseek(archivo, 0, SEEK_SET); // Coloca el puntero al inicio del archivo
+
+    printf("\nLista de Usuarios:\n");
+    printf("Nombre\t\tPIN\tSaldo\n");
+    printf("------------------------------------\n");
+
+    while (fread(&usuario, sizeof(Usuario), 1, archivo) == 1) {
+        printf("%s\t\t%d\t%.2f\n", usuario.nombre, usuario.pin, usuario.saldo);
+    }
+}
+
+// Función para modificar el saldo de un usuario por su PIN
+void modificarSaldo(FILE *archivo, int pin, float nuevoSaldo) {
+    Usuario usuario;
+
+    fseek(archivo, 0, SEEK_SET); // Coloca el puntero al inicio del archivo
+
+    int encontrado = 0;
+    while (fread(&usuario, sizeof(Usuario), 1, archivo) == 1) {
+        if (usuario.pin == pin) {
+            usuario.saldo = nuevoSaldo;
+            fseek(archivo, -sizeof(Usuario), SEEK_CUR); // Retrocede para sobrescribir el registro
+            fwrite(&usuario, sizeof(Usuario), 1, archivo);
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (encontrado) {
+        printf("Saldo actualizado para el usuario con PIN %d.\n", pin);
+    } else {
+        printf("Usuario con PIN %d no encontrado.\n", pin);
+    }
+}
