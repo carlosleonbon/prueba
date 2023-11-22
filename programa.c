@@ -4,12 +4,12 @@
 #include <ctype.h>
 #include "funciones.h"
 #include "estructuras.h"
-#define MAX_LONGITUD_PALABRA 100
+#define tam 100
 
 int main() {
     char nombreArchivo[] = "texto.txt";
     FILE *archivo;
-    char palabra[MAX_LONGITUD_PALABRA];
+    char palabra[tam];
 
     archivo = fopen(nombreArchivo, "r");
     if (archivo == NULL) {
@@ -17,7 +17,7 @@ int main() {
         return 1;
     }
 
-    ConteoPalabra conteo[1000]; // Arreglo para almacenar conteo de palabras
+    ConteoPalabra conteo[1000]; 
     int numPalabras = 0;
 
     while (fscanf(archivo, "%s", palabra) == 1) {
@@ -35,7 +35,6 @@ int main() {
 
     fclose(archivo);
 
-    // Generar reporte
     printf("Reporte de frecuencia de palabras:\n");
     printf("------------------------------\n");
     for (int i = 0; i < numPalabras; i++) {

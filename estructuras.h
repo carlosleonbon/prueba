@@ -1,8 +1,8 @@
-#define MAX_LONGITUD_PALABRA 100
+#define longitud 100
 #pragma once
 
 typedef struct ConteoPalabra{
-    char palabra[MAX_LONGITUD_PALABRA];
+    char palabra[longitud];
     int frecuencia;
 }ConteoPalabra;
 
